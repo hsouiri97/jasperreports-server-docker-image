@@ -1,5 +1,11 @@
+#!/bin/bash
 /bin/bash app-entrypoint.sh nami start --foreground tomcat &
-sleep $1
+until [ "`curl --silent --show-error -L -I http://localhost:8080 | grep 'jasperserver'`" != "" ];
+do
+  echo --- sleeping for 20 seconds
+  sleep 20
+done
+echo "jasperserver is up!"
 cd /opt/bitnami/tomcat/bin
 chmod +x setenv.sh
 chmod +x shutdown.sh
